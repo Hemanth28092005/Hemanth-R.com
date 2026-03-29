@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects | Hemanth R Aradhya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --navy:#111111; --blue:#2d2d2d; --sky:#8a8a8a; --light:#f2f2f2; --bg:#fafafa; --text:#111111; --muted:#666666; --white:#fff; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: radial-gradient(circle at top left, rgba(0,0,0,0.05), transparent 32%), radial-gradient(circle at right 20%, rgba(0,0,0,0.04), transparent 28%), var(--bg);
+      color: var(--text); overflow-x: hidden; cursor: none;
+    }
+    a, button { cursor: none; }
+    #cursor, #cursor-ring { position: fixed; pointer-events: none; border-radius: 50%; transform: translate(-50%, -50%); z-index: 9999; }
+    #cursor { width: 12px; height: 12px; background: var(--blue); transition: width 0.2s, height 0.2s, background 0.2s; }
+    #cursor-ring { width: 36px; height: 36px; border: 1.5px solid var(--blue); opacity: 0.45; z-index: 9998; transition: width 0.25s, height 0.25s, opacity 0.2s; }
+    .cursor-grow #cursor { width: 20px; height: 20px; background: var(--navy); }
+    .cursor-grow #cursor-ring { width: 52px; height: 52px; opacity: 0.16; }
+    #progress-bar { position: fixed; top: 0; left: 0; width: 0; height: 3px; background: linear-gradient(90deg, #d9d9d9, #797979, #111111); z-index: 999; }
+    #particles { position: fixed; inset: 0; pointer-events: none; opacity: 0.4; z-index: 0; }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 64px; background: rgba(250,250,250,0.88); backdrop-filter: blur(18px); border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+    .nav-logo, .nav-links a { text-decoration: none; }
+    .nav-logo { color: var(--navy); font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; }
+    .nav-links { list-style: none; display: flex; gap: 30px; }
+    .nav-links a { color: var(--muted); font-size: 0.88rem; font-weight: 600; }
+    .nav-links a:hover, .nav-links a.active { color: var(--navy); }
+    main { position: relative; z-index: 1; }
+    .hero {
+      min-height: 84vh; padding: 140px 64px 80px; display: grid; grid-template-columns: 1.2fr 0.9fr; gap: 44px; align-items: center; max-width: 1240px; margin: 0 auto;
+    }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--blue); font-size: 0.72rem; font-weight: 700; margin-bottom: 18px; }
+    .eyebrow::before { content: ""; width: 26px; height: 2px; background: var(--blue); }
+    h1, h2 { font-family: 'Playfair Display', serif; letter-spacing: -0.03em; }
+    .hero h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.04; margin-bottom: 18px; }
+    .hero p { color: var(--muted); line-height: 1.85; font-size: 0.98rem; max-width: 620px; }
+    .hero-panel { padding: 30px; border-radius: 28px; background: rgba(255,255,255,0.82); border: 1px solid rgba(0,0,0,0.06); backdrop-filter: blur(18px); box-shadow: 0 24px 70px rgba(0,0,0,0.08); }
+    .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .stat-card { background: var(--white); border-radius: 20px; padding: 22px; box-shadow: 0 12px 32px rgba(0,0,0,0.06); }
+    .stat-card strong { display: block; color: var(--blue); font-size: 2rem; font-family: 'Playfair Display', serif; margin-bottom: 6px; }
+    .stat-card span { color: var(--muted); font-size: 0.84rem; }
+    .hero-actions, .card-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+    .hero-actions { margin-top: 28px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 26px; border-radius: 999px; border: 0; text-decoration: none; font-size: 0.88rem; font-weight: 700; transition: transform 0.25s, box-shadow 0.25s, background 0.25s, color 0.25s; }
+    .btn:hover { transform: translateY(-3px); }
+    .btn-primary { background: var(--navy); color: #fff; box-shadow: 0 14px 32px rgba(0,0,0,0.14); }
+    .btn-outline { color: var(--navy); border: 2px solid var(--navy); background: transparent; }
+    .btn-outline:hover { background: var(--navy); color: #fff; }
+    .section { max-width: 1240px; margin: 0 auto; padding: 20px 64px 90px; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 38px; flex-wrap: wrap; }
+    .section-head p { max-width: 620px; color: var(--muted); line-height: 1.8; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .project-card { position: relative; overflow: hidden; background: rgba(255,255,255,0.92); border: 1px solid rgba(0,0,0,0.08); border-radius: 26px; padding: 28px; box-shadow: 0 18px 46px rgba(0,0,0,0.06); transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s; }
+    .project-card:hover { transform: translateY(-8px) rotate(-0.4deg); box-shadow: 0 28px 60px rgba(0,0,0,0.12); border-color: rgba(0,0,0,0.2); }
+    .project-accent { width: 58px; height: 58px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 700; margin-bottom: 18px; background: linear-gradient(135deg, #f2f2f2, #d5d5d5); color: var(--navy); }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .project-tags span { padding: 6px 12px; border-radius: 999px; background: var(--light); color: var(--blue); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; }
+    .project-card h3 { font-size: 1.35rem; margin-bottom: 12px; }
+    .project-card p { color: var(--muted); line-height: 1.8; font-size: 0.9rem; }
+    .project-meta { display: flex; justify-content: space-between; gap: 12px; margin: 22px 0 20px; color: var(--muted); font-size: 0.78rem; font-weight: 600; }
+    .timeline { display: grid; gap: 20px; }
+    .timeline-card { display: grid; grid-template-columns: 120px 1fr; gap: 24px; align-items: start; background: rgba(255,255,255,0.88); border-radius: 24px; padding: 28px; border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 16px 44px rgba(0,0,0,0.06); }
+    .timeline-year { color: var(--blue); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; }
+    .timeline-card h3 { margin-bottom: 10px; font-size: 1.28rem; }
+    .timeline-card p { color: var(--muted); line-height: 1.82; }
+    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.75s ease, transform 0.75s ease; }
+    .reveal.vis { opacity: 1; transform: none; }
+    footer { padding: 28px 64px 40px; color: var(--muted); font-size: 0.8rem; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; max-width: 1240px; margin: 0 auto; }
+    @media (max-width: 900px) {
+      body { cursor: auto; }
+      a, button { cursor: pointer; }
+      #cursor, #cursor-ring { display: none; }
+      nav, .hero, .section, footer { padding-left: 24px; padding-right: 24px; }
+      nav { padding-top: 16px; padding-bottom: 16px; }
+      .nav-links { gap: 16px; flex-wrap: wrap; justify-content: end; }
+      .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 120px; }
+      .hero-stats, .timeline-card { grid-template-columns: 1fr; }
+      .section-head { align-items: start; }
+    }
+  </style>
+</head>
+<body>
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+  <div id="progress-bar"></div>
+  <canvas id="particles"></canvas>
+  <nav>
+    <a class="nav-logo" href="index.html">Hemanth R</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a class="active" href="projects.html">Projects</a></li>
+      <li><a href="certifications.html">Certifications</a></li>
+      <li><a href="index.html#contacts">Contact</a></li>
+    </ul>
+  </nav>
+  <main>
+    <section class="hero">
+      <div class="reveal">
+        <span class="eyebrow">Project Archive</span>
+        <h1>Building practical ML systems with a clean, thoughtful workflow.</h1>
+        <p>These are the portfolio pieces behind the homepage preview. Each project highlights a different part of the machine learning journey: data preparation, experimentation, model building, and communicating useful outcomes.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="index.html#contacts">Start a Conversation</a>
+          <a class="btn btn-outline" href="certifications.html">See Certifications</a>
+        </div>
+      </div>
+      <div class="hero-panel reveal">
+        <div class="hero-stats">
+          <div class="stat-card"><strong>5+</strong><span>Projects completed across ML, analytics, and neural networks.</span></div>
+          <div class="stat-card"><strong>3</strong><span>Core strengths: modeling, analysis, and problem solving.</span></div>
+          <div class="stat-card"><strong>100%</strong><span>Focused on practical learning with real-world relevance.</span></div>
+          <div class="stat-card"><strong>1</strong><span>Goal: turn curiosity into reliable intelligent systems.</span></div>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="section-head reveal">
+        <div><span class="eyebrow">Featured Work</span><h2>Selected build highlights</h2></div>
+      </div>
+      <div class="grid">
+        <article class="project-card reveal">
+          <div class="project-accent">AI</div>
+          <div class="project-tags"><span>ML</span><span>Python</span><span>Classification</span></div>
+          <h3>ML Classification Model</h3>
+          <p>Built a classification workflow with preprocessing, feature engineering, model comparison, and evaluation metrics that make performance easy to explain.</p>
+          <div class="project-meta"><span>Focus: prediction quality</span><span>Status: Ongoing</span></div>
+          <div class="card-actions"><a class="btn btn-outline" href="index.html#contacts">Request Details</a></div>
+        </article>
+        <article class="project-card reveal">
+          <div class="project-accent">DA</div>
+          <div class="project-tags"><span>Analytics</span><span>Pandas</span><span>Visualization</span></div>
+          <h3>Data Analytics Dashboard</h3>
+          <p>Explored structured datasets to surface patterns, clean messy inputs, and turn raw data into visual stories that support better decisions.</p>
+          <div class="project-meta"><span>Focus: insight discovery</span><span>Status: completed</span></div>
+          <div class="card-actions"><a class="btn btn-outline" href="index.html#contacts">Discuss the Work</a></div>
+        </article>
+        <article class="project-card reveal">
+          <div class="project-accent">NN</div>
+          <div class="project-tags"><span>Deep Learning</span><span>NumPy</span><span>Backprop</span></div>
+          <h3>Neural Network from Scratch</h3>
+          <p>Implemented a feedforward network in pure Python to understand the math underneath training loops, gradients, and parameter updates.</p>
+          <div class="project-meta"><span>Focus: fundamentals</span><span>Status: Ongoing</span></div>
+          <div class="card-actions"><a class="btn btn-outline" href="certifications.html">Pair With Certifications</a></div>
+        </article>
+        <article class="project-card reveal">
+          <div class="project-accent">DS</div>
+          <div class="project-tags"><span>Algorithms</span><span>Data Structures</span><span>Problem Solving</span></div>
+          <h3>Algorithm Practice Systems</h3>
+          <p>Strengthened core engineering foundations through structured problem solving, efficient implementations, and careful reasoning about tradeoffs.</p>
+          <div class="project-meta"><span>Focus: engineering depth</span><span>Status: Ongoing</span></div>
+          <div class="card-actions"><a class="btn btn-outline" href="index.html#skills-section">View Skills</a></div>
+        </article>
+        <article class="project-card reveal">
+          <div class="project-accent">🌾</div>
+          <div class="project-tags"><span>AI</span><span>Python</span><span>Web App</span></div>
+          <h3>Kishti AI</h3>
+          <p>Built an intelligent platform for farmers to access information about government land scheme benefits and receive alerts for potential encroachment threats on their properties using CNN and GIS.</p>
+          <div class="project-meta"><span>Focus: social impact</span><span>Status: deployed</span></div>
+          <div class="card-actions"><a class="btn btn-outline" href="index.html#contacts">Learn More</a></div>
+        </article>
+        <article class="project-card reveal">
+          <div class="project-accent">📁</div>
+          <div class="project-tags"><span>Unix</span><span>Automation</span><span>Shell</span></div>
+          <h3>Automatic File Sorter</h3>
+          <p>Developed a Unix utility that intelligently organizes files into categorized sections based on file type, metadata, and naming conventions for streamlined file management.</p>
+          <div class="project-meta"><span>Focus: automation</span><span>Status: Deployed</span></div>
+          <div class="card-actions"><a class="btn btn-outline" href="index.html#contacts">See Code</a></div>
+        </article>
+      </div>
+    </section>
+    <section class="section">
+      <div class="section-head reveal">
+        <div><span class="eyebrow">Process</span><h2>How the work is approached</h2></div>
+      </div>
+      <div class="timeline">
+        <article class="timeline-card reveal"><div class="timeline-year">Step 01</div><div><h3>Frame the problem clearly</h3><p>Start with the target outcome, define what success looks like, and identify the data signals that actually matter before choosing a model.</p></div></article>
+        <article class="timeline-card reveal"><div class="timeline-year">Step 02</div><div><h3>Prepare and understand the data</h3><p>Cleaning, transforming, and exploring the dataset usually creates the biggest lift in model quality, so this stage gets real attention.</p></div></article>
+        <article class="timeline-card reveal"><div class="timeline-year">Step 03</div><div><h3>Train, evaluate, and explain</h3><p>Compare approaches, measure results with the right metrics, and keep the final output readable enough for both technical and non-technical audiences.</p></div></article>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <span>&copy; 2026 Hemanth R Aradhya</span>
+    <span>Built with ❤️ and Passion </span>
+  </footer>
+  <script>
+    const cur = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cur.style.left = mx + 'px'; cur.style.top = my + 'px'; });
+    document.querySelectorAll('a, button, .project-card').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-grow'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-grow'));
+    });
+    (function loop() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(loop); })();
+    const bar = document.getElementById('progress-bar');
+    window.addEventListener('scroll', () => {
+      const total = document.body.scrollHeight - window.innerHeight;
+      bar.style.width = (total > 0 ? window.scrollY / total * 100 : 0) + '%';
+    });
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    let W, H;
+    const points = [];
+    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+    class Particle {
+      constructor() { this.x = Math.random() * W; this.y = Math.random() * H; this.r = Math.random() * 2 + 0.5; this.vx = (Math.random() - 0.5) * 0.4; this.vy = (Math.random() - 0.5) * 0.4; this.a = Math.random() * 0.4 + 0.18; }
+      step() { this.x += this.vx; this.y += this.vy; if (this.x < 0 || this.x > W) this.vx *= -1; if (this.y < 0 || this.y > H) this.vy *= -1; }
+      draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2); ctx.fillStyle = `rgba(30, 30, 30, ${this.a})`; ctx.fill(); }
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    for (let i = 0; i < 70; i++) points.push(new Particle());
+    (function animate() { ctx.clearRect(0, 0, W, H); points.forEach(p => { p.step(); p.draw(); }); requestAnimationFrame(animate); })();
+    const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('vis'); }); }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hemanth R Aradhya — ML Engineer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:  #111111;
+      --blue:  #2b2b2b;
+      --sky:   #7d7d7d;
+      --light: #f3f3f3;
+      --bg:    #fafafa;
+      --text:  #111111;
+      --muted: #666666;
+      --white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ─── CUSTOM CURSOR ─── */
+    #cursor {
+      position: fixed; width: 12px; height: 12px;
+      background: var(--blue); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: width 0.2s, height 0.2s, background 0.2s;
+      mix-blend-mode: multiply;
+    }
+    #cursor-ring {
+      position: fixed; width: 36px; height: 36px;
+      border: 1.5px solid var(--blue); border-radius: 50%;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: width 0.25s, height 0.25s, opacity 0.2s;
+      opacity: 0.45;
+    }
+    .cursor-grow #cursor { width: 20px; height: 20px; background: var(--navy); }
+    .cursor-grow #cursor-ring { width: 52px; height: 52px; opacity: 0.18; }
+
+    /* ─── RIPPLE ─── */
+    .ripple-burst {
+      position: fixed; width: 0; height: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(120,120,120,0.35) 0%, transparent 70%);
+      pointer-events: none; z-index: 9997;
+      transform: translate(-50%, -50%);
+      animation: ripplePop 0.6s ease-out forwards;
+    }
+    @keyframes ripplePop {
+      0%   { width: 0px; height: 0px; opacity: 1; }
+      100% { width: 120px; height: 120px; opacity: 0; }
+    }
+
+    /* ─── PARTICLES ─── */
+    #particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.35; }
+
+    /* ─── SCROLL PROGRESS ─── */
+    #progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: linear-gradient(90deg, #d9d9d9, #787878, #111111);
+      width: 0%; z-index: 300; transition: width 0.1s linear;
+    }
+
+    /* ─── EASTER EGG CONFETTI ─── */
+    .confetti-piece {
+      position: fixed; width: 8px; height: 8px; border-radius: 2px;
+      pointer-events: none; z-index: 9996;
+      animation: confettiFall 1.4s ease-in forwards;
+    }
+    @keyframes confettiFall {
+      0%   { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+      100% { opacity: 0; transform: translateY(300px) rotate(720deg) scale(0.3); }
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 64px;
+      background: rgba(240,244,250,0.86);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      animation: fadeDown 0.7s ease both;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; font-weight: 700; letter-spacing: -0.02em;
+      color: var(--navy); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--muted);
+      font-size: 0.875rem; font-weight: 500;
+      position: relative; transition: color 0.2s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 2px; background: var(--blue);
+      transition: width 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .nav-links a:hover { color: var(--navy); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100vh; display: flex; align-items: center;
+      padding: 110px 64px 80px;
+      position: relative; overflow: hidden; z-index: 1;
+    }
+    .hero-inner {
+      max-width: 1160px; margin: 0 auto; width: 100%;
+      display: flex; align-items: center; gap: 60px;
+    }
+    .hero-content { flex: 1; max-width: 520px; z-index: 2; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 20px;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+    .hero-badge::before { content:''; width:28px; height:2px; background:var(--blue); display:inline-block; }
+
+    /* ─── GLITCH TITLE ─── */
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      font-weight: 900; line-height: 1.08; letter-spacing: -0.03em;
+      margin-bottom: 8px; animation: fadeUp 0.7s 0.45s ease both;
+    }
+    .hero-name {
+      display: block; font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: clamp(2.2rem, 4.5vw, 3.9rem); font-weight: 900; color: var(--blue);
+      animation: fadeUp 0.7s 0.55s ease both; position: relative;
+      cursor: pointer; user-select: none;
+    }
+    .hero-name::after {
+      content: ''; position: absolute; bottom: 2px; left: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, #d0d0d0, #1a1a1a);
+      transform: scaleX(0); transform-origin: left;
+      animation: underlineReveal 0.9s 1.3s cubic-bezier(0.4,0,0.2,1) forwards;
+    }
+    @keyframes underlineReveal { to { transform: scaleX(1); } }
+    .hero-name.glitch {
+      animation: glitch 0.4s steps(2) forwards;
+    }
+    @keyframes glitch {
+      0%   { text-shadow: 2px 0 #ff0066, -2px 0 #00ffcc; transform: skewX(0deg); }
+      20%  { text-shadow: -3px 0 #ff0066, 3px 0 #00ffcc; transform: skewX(-3deg); }
+      40%  { text-shadow: 3px 0 #ff0066, -3px 0 #00ffcc; transform: skewX(2deg); }
+      60%  { text-shadow: -2px 0 #ff0066, 2px 0 #00ffcc; transform: skewX(-1deg); }
+      80%  { text-shadow: 1px 0 #ff0066, -1px 0 #00ffcc; transform: skewX(0.5deg); }
+      100% { text-shadow: none; transform: skewX(0); }
+    }
+
+    .typed-role {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--blue);
+      margin: 14px 0 20px; min-height: 20px;
+      animation: fadeUp 0.6s 0.7s ease both;
+    }
+    .cursor-blink {
+      display: inline-block; width: 2px; height: 1em;
+      background: var(--blue); margin-left: 2px; vertical-align: middle;
+      animation: blink 0.8s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .hero-desc {
+      font-size: 0.93rem; line-height: 1.82; color: var(--muted);
+      max-width: 400px; margin-bottom: 38px;
+      animation: fadeUp 0.7s 0.85s ease both;
+    }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; animation: fadeUp 0.7s 1s ease both; }
+
+    /* ─── BUTTONS ─── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 30px; border-radius: 50px;
+      font-size: 0.875rem; font-weight: 600;
+      text-decoration: none; cursor: none; border: none;
+      transition: transform 0.25s, box-shadow 0.25s, background 0.25s, color 0.25s;
+      position: relative; overflow: hidden;
+    }
+    .btn::before {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(255,255,255,0.18);
+      transform: translateX(-100%) skewX(-15deg);
+      transition: transform 0.45s ease;
+    }
+    .btn:hover::before { transform: translateX(110%) skewX(-15deg); }
+    .btn:hover { transform: translateY(-3px); }
+    .btn-primary { background: var(--navy); color: #fff; box-shadow: 0 6px 24px rgba(0,0,0,0.18); }
+    .btn-primary:hover { box-shadow: 0 14px 36px rgba(0,0,0,0.24); }
+    .btn-outline { background: transparent; color: var(--navy); border: 2px solid var(--navy); }
+    .btn-outline:hover { background: var(--navy); color: #fff; }
+
+    /* ─── PHOTO FRAME ─── */
+    .hero-photo-wrap {
+      flex-shrink: 0; position: relative;
+      width: min(470px, 50vw);
+      animation: fadeUp 0.9s 0.2s ease both; z-index: 2;
+    }
+    .photo-frame {
+      position: relative; border-radius: 28px; overflow: hidden;
+      aspect-ratio: 10 / 11; width: 100%;
+      box-shadow: 0 0 0 4px var(--bg), 0 0 0 7px var(--blue), 0 32px 72px rgba(0,0,0,0.16);
+    }
+    .photo-frame::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.08) 45%, transparent 70%);
+      pointer-events: none; border-radius: inherit;
+    }
+    .photo-frame img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: top center;
+      display: block; border-radius: inherit; transition: transform 0.6s ease;
+    }
+    .hero-photo-wrap:hover .photo-frame img { transform: scale(1.04); }
+    .photo-wipe-layer {
+      position: absolute; inset: 0; z-index: 2;
+      width: 100%; height: 100%;
+      cursor: none; touch-action: none;
+    }
+    .photo-wipe-layer.done {
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.65s ease;
+    }
+    .photo-wipe-hint {
+      position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+      z-index: 4; padding: 8px 14px; border-radius: 999px;
+      background: rgba(17,17,17,0.72); color: #fff;
+      border: 1px solid rgba(255,255,255,0.18);
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; white-space: nowrap;
+      backdrop-filter: blur(10px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .photo-wipe-hint.fade {
+      opacity: 0; transform: translateX(-50%) translateY(-8px);
+    }
+    .photo-nametag {
+      position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: rgba(255,255,255,0.16); backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.3); border-radius: 12px;
+      padding: 10px 20px; color: #fff;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
+      text-align: center; white-space: nowrap; z-index: 3;
+    }
+    .photo-nametag span { display: block; font-size: 0.64rem; opacity: 0.75; font-weight: 400; margin-top: 2px; }
+    .corner { position: absolute; width: 22px; height: 22px; border-color: var(--sky); border-style: solid; z-index: 4; }
+    .corner-tl { top: -10px; left: -10px; border-width: 3px 0 0 3px; border-radius: 6px 0 0 0; }
+    .corner-tr { top: -10px; right: -10px; border-width: 3px 3px 0 0; border-radius: 0 6px 0 0; }
+    .corner-bl { bottom: -10px; left: -10px; border-width: 0 0 3px 3px; border-radius: 0 0 0 6px; }
+    .corner-br { bottom: -10px; right: -10px; border-width: 0 3px 3px 0; border-radius: 0 0 6px 0; }
+    .photo-bg-tile {
+      position: absolute; top: 18px; left: 18px; right: -18px; bottom: -18px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, #d8d8d8 0%, #7d7d7d 60%, #111111 100%);
+      z-index: -1; opacity: 0.35;
+    }
+    .badge-chip {
+      position: absolute; background: var(--white); border-radius: 14px;
+      padding: 10px 14px; display: flex; align-items: center; gap: 9px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+      font-size: 0.75rem; font-weight: 600; color: var(--text);
+      white-space: nowrap; z-index: 5;
+    }
+    .badge-chip .chip-icon {
+      width: 30px; height: 30px; border-radius: 8px; background: var(--light);
+      display: flex; align-items: center; justify-content: center; font-size: 1rem;
+    }
+    .badge-chip small { display: block; font-weight: 400; font-size: 0.65rem; color: var(--muted); }
+    .chip-top { top: -20px; left: -60px; animation: floatChip 4s ease-in-out infinite; }
+    .chip-mid { right: -64px; top: 38%; animation: floatChip 5s ease-in-out infinite 1s; }
+    .chip-bot { bottom: 60px; left: -70px; animation: floatChip 4.5s ease-in-out infinite 0.5s; }
+    @keyframes floatChip { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+    /* ─── FUN TOOLTIP ─── */
+    .fun-tip {
+      position: fixed; background: var(--navy); color: #fff;
+      padding: 8px 16px; border-radius: 20px; font-size: 0.72rem; font-weight: 600;
+      pointer-events: none; z-index: 9990; white-space: nowrap;
+      opacity: 0; transform: translateY(4px);
+      transition: opacity 0.25s, transform 0.25s;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    }
+    .fun-tip.show { opacity: 1; transform: translateY(0); }
+    .fun-tip::after {
+      content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+      border: 6px solid transparent; border-top-color: var(--navy);
+    }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal        { opacity:0; transform:translateY(36px);  transition: opacity 0.75s ease, transform 0.75s ease; }
+    .reveal-left   { opacity:0; transform:translateX(-42px); transition: opacity 0.75s ease, transform 0.75s ease; }
+    .reveal-right  { opacity:0; transform:translateX(42px);  transition: opacity 0.75s ease, transform 0.75s ease; }
+    .reveal.vis, .reveal-left.vis, .reveal-right.vis { opacity:1; transform:none; }
+
+    /* ─── ABOUT ─── */
+    #about {
+      padding: 110px 64px; display: grid; grid-template-columns: 1fr 1fr;
+      gap: 90px; align-items: center; max-width: 1160px; margin: 0 auto; position: relative; z-index: 1;
+    }
+    .section-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 16px;
+    }
+    .section-eyebrow::before { content:''; width:22px; height:2px; background:var(--blue); display:inline-block; }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 700; line-height: 1.14; margin-bottom: 18px;
+    }
+    .section-body { font-size: 0.92rem; line-height: 1.84; color: var(--muted); }
+
+    .skills-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+    .skill-tag {
+      padding: 8px 18px; background: var(--white); border-radius: 50px;
+      font-size: 0.78rem; font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      cursor: none; transition: all 0.25s;
+    }
+    .skill-tag:hover {
+      background: var(--navy); color: #fff;
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.16);
+    }
+
+    .about-numbers { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .stat-card-about {
+      background: var(--white); border-radius: 20px; padding: 30px 24px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      transition: transform 0.3s, box-shadow 0.3s; cursor: none;
+    }
+    .stat-card-about:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,0.12); }
+    .stat-card-about .big { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: var(--blue); }
+    .stat-card-about .unit { font-size: 1.4rem; font-weight: 700; color: var(--sky); }
+    .stat-card-about .lbl { font-size: 0.78rem; color: var(--muted); margin-top: 6px; }
+    .stat-highlight {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, #111111, #3b3b3b);
+      color: #fff; border-radius: 20px; padding: 30px 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.16); cursor: none; transition: transform 0.3s;
+    }
+    .stat-highlight:hover { transform: translateY(-4px); }
+    .stat-highlight .big { color: var(--sky); }
+    .stat-highlight .lbl { color: rgba(255,255,255,0.72); }
+
+    /* ─── SKILLS BARS ─── */
+    #skills-section { background: var(--white); padding: 90px 64px; position: relative; z-index: 1; }
+    .skills-section-inner { max-width: 1160px; margin: 0 auto; }
+    .skills-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 60px; }
+    .skill-bar-group { margin-bottom: 30px; }
+    .skill-bar-label {
+      display: flex; justify-content: space-between;
+      font-size: 0.82rem; font-weight: 600; margin-bottom: 9px; color: var(--text);
+    }
+    .skill-bar-track { height: 6px; background: var(--light); border-radius: 99px; overflow: hidden; }
+    .skill-bar-fill {
+      height: 100%; background: linear-gradient(90deg, #cfcfcf, #1a1a1a);
+      border-radius: 99px; width: 0%;
+      transition: width 1.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .skill-bar-fill.anim { width: var(--tw); }
+
+    /* ─── PROJECTS ─── */
+    #projects { padding: 90px 64px; position: relative; z-index: 1; }
+    .projects-header {
+      max-width: 1160px; margin: 0 auto 52px;
+      display: flex; align-items: flex-end; justify-content: space-between;
+    }
+    .section-link {
+      margin-top: 18px;
+      display: inline-flex;
+    }
+    .projects-grid {
+      max-width: 1160px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 26px;
+    }
+    .project-card {
+      border-radius: 22px; overflow: hidden; background: var(--white);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), box-shadow 0.35s;
+      cursor: none; position: relative; transform-style: preserve-3d;
+    }
+    .project-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #111111, #444444);
+      opacity: 0; transition: opacity 0.35s; z-index: 0; border-radius: 22px;
+      pointer-events: none;
+    }
+    .project-card:hover .project-overlay { opacity: 1; }
+    .project-card:hover { box-shadow: 0 24px 60px rgba(0,0,0,0.15); }
+    .project-card:hover .project-name,
+    .project-card:hover .project-desc { color: #fff; }
+    .project-card:hover .project-tag { background: rgba(255,255,255,0.15); color: #fff; }
+    .project-thumb {
+      height: 190px; display: flex; align-items: center; justify-content: center;
+      font-size: 3rem; position: relative; z-index: 1;
+    }
+    .thumb-icon { transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1); display: inline-block; }
+    .project-card:hover .thumb-icon { transform: scale(1.32) rotate(-6deg); }
+    .project-body { padding: 24px 26px; position: relative; z-index: 1; }
+    .project-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .project-tag {
+      font-size: 0.68rem; font-weight: 600; color: var(--blue);
+      background: var(--light); padding: 4px 12px; border-radius: 50px; transition: all 0.3s;
+    }
+    .project-name {
+      font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700;
+      margin-bottom: 8px; transition: color 0.3s;
+    }
+    .project-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.68; transition: color 0.3s; }
+    .project-actions { margin-top: 18px; }
+    .project-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; text-decoration: none; color: var(--navy);
+      transition: color 0.3s, transform 0.3s;
+    }
+    .project-link:hover { transform: translateX(4px); }
+    .project-card:hover .project-link { color: #fff; }
+
+    /* ═══════════════════════════════════════
+       ─── CERTIFICATIONS SECTION ───
+    ═══════════════════════════════════════ */
+    #certifications {
+      background: linear-gradient(175deg, #111111 0%, #202020 55%, #353535 100%);
+      padding: 100px 64px; position: relative; overflow: hidden; z-index: 1;
+    }
+    #certifications::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .certs-inner { max-width: 1160px; margin: 0 auto; position: relative; z-index: 2; }
+    .certs-header { margin-bottom: 60px; }
+    .certs-header-row {
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+    }
+    .certs-header .section-eyebrow { color: var(--sky); }
+    .certs-header .section-eyebrow::before { background: var(--sky); }
+    .certs-header .section-title { color: #fff; }
+
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .cert-card {
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 22px; padding: 32px 28px;
+      position: relative; overflow: hidden;
+      cursor: none;
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), border-color 0.3s, background 0.3s, box-shadow 0.35s;
+    }
+    .cert-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      background: rgba(255,255,255,0.11);
+      border-color: rgba(255,255,255,0.26);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.22), 0 0 30px rgba(255,255,255,0.06);
+    }
+    /* shine sweep on hover */
+    .cert-card::before {
+      content: '';
+      position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.6s ease;
+    }
+    .cert-card:hover::before { left: 160%; }
+
+    .cert-preview-mini {
+      height: 180px; border-radius: 18px; overflow: hidden;
+      margin-bottom: 20px; background: rgba(255,255,255,0.95);
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+    .cert-preview-mini iframe {
+      width: 100%; height: 100%; border: 0; background: #fff;
+    }
+    .cert-icon-wrap {
+      width: 58px; height: 58px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.7rem; margin-bottom: 20px;
+      position: relative;
+    }
+    .cert-icon-wrap::after {
+      content: '';
+      position: absolute; inset: -1px; border-radius: 17px;
+      background: linear-gradient(135deg, #d0d0d0, #585858);
+      z-index: -1; opacity: 0.6;
+      transition: opacity 0.3s;
+    }
+    .cert-card:hover .cert-icon-wrap::after { opacity: 1; }
+
+    .cert-issuer {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--sky); margin-bottom: 8px;
+    }
+    .cert-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem; font-weight: 700; color: #fff;
+      line-height: 1.3; margin-bottom: 10px;
+    }
+    .cert-desc {
+      font-size: 0.78rem; color: rgba(255,255,255,0.55); line-height: 1.65;
+      margin-bottom: 18px;
+    }
+    .cert-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px;
+    }
+    .cert-date {
+      font-size: 0.7rem; font-weight: 600;
+      color: rgba(255,255,255,0.45); letter-spacing: 0.06em;
+    }
+    .cert-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 0.65rem; font-weight: 700;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #f5f5f5; padding: 4px 10px; border-radius: 20px;
+      letter-spacing: 0.06em;
+      transition: background 0.3s;
+    }
+    .cert-card:hover .cert-badge {
+      background: rgba(255,255,255,0.14);
+    }
+    .cert-badge::before { content: '✓'; }
+    .cert-card-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 18px; text-decoration: none;
+      font-size: 0.74rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: #fff;
+      transition: transform 0.3s, opacity 0.3s;
+      opacity: 0.88;
+    }
+    .cert-card-link:hover { transform: translateX(4px); opacity: 1; }
+
+    /* Floating deco orbs */
+    .cert-orb {
+      position: absolute; border-radius: 50%; pointer-events: none;
+      filter: blur(60px); opacity: 0.12;
+    }
+    .cert-orb-1 { width: 300px; height: 300px; background: #ffffff; top: -80px; right: -60px; }
+    .cert-orb-2 { width: 200px; height: 200px; background: #7a7a7a; bottom: -40px; left: 100px; }
+
+    /* In-progress shimmer */
+    .cert-card.in-progress .cert-badge { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.18); color: #f0f0f0; }
+    .cert-card.in-progress .cert-badge::before { content: '⏳'; }
+
+    /* ─── INTERACTIVE MINI-GAME: ML QUIZ ─── */
+    #quiz-section {
+      padding: 90px 64px; position: relative; z-index: 1;
+      background: var(--bg);
+    }
+    .quiz-inner { max-width: 760px; margin: 0 auto; }
+    .quiz-box {
+      background: var(--white); border-radius: 28px;
+      padding: 50px 52px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+      position: relative; overflow: hidden;
+    }
+    .quiz-box::before {
+      content: '🤖'; position: absolute; top: -20px; right: -10px;
+      font-size: 8rem; opacity: 0.04; pointer-events: none;
+    }
+    .quiz-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--light); color: var(--blue);
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; padding: 6px 14px; border-radius: 50px;
+      margin-bottom: 22px;
+    }
+    .quiz-question {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem; font-weight: 700; line-height: 1.4;
+      margin-bottom: 28px; color: var(--text);
+    }
+    .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .quiz-opt {
+      padding: 14px 20px; border-radius: 14px;
+      border: 2px solid var(--light); background: var(--light);
+      font-size: 0.85rem; font-weight: 500; color: var(--text);
+      cursor: none; transition: all 0.22s; text-align: left;
+    }
+    .quiz-opt:hover:not(:disabled) {
+      border-color: var(--blue); background: #e0eaff; color: var(--navy);
+      transform: translateY(-2px);
+    }
+    .quiz-opt.correct { border-color: #22c55e; background: #dcfce7; color: #15803d; }
+    .quiz-opt.wrong   { border-color: #ef4444; background: #fee2e2; color: #b91c1c; }
+    .quiz-opt:disabled { cursor: not-allowed; }
+    .quiz-feedback {
+      margin-top: 22px; padding: 14px 20px;
+      border-radius: 14px; font-size: 0.85rem; font-weight: 600;
+      opacity: 0; transform: translateY(8px);
+      transition: all 0.3s; display: flex; align-items: center; gap: 10px;
+    }
+    .quiz-feedback.show { opacity: 1; transform: none; }
+    .quiz-feedback.good { background: #dcfce7; color: #15803d; }
+    .quiz-feedback.bad  { background: #fee2e2; color: #b91c1c; }
+    .quiz-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 28px; flex-wrap: wrap; gap: 12px;
+    }
+    .quiz-score {
+      font-size: 0.82rem; font-weight: 600; color: var(--muted);
+    }
+    .quiz-score span { color: var(--blue); font-size: 1.1rem; }
+    #quiz-next {
+      padding: 12px 28px; border-radius: 50px;
+      background: var(--navy); color: #fff; border: none;
+      font-size: 0.875rem; font-weight: 600; cursor: none;
+      transition: all 0.25s; opacity: 0; pointer-events: none;
+    }
+    #quiz-next.ready { opacity: 1; pointer-events: auto; }
+    #quiz-next:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.18); }
+    .quiz-progress-track {
+      height: 4px; background: var(--light); border-radius: 99px;
+      margin-bottom: 28px; overflow: hidden;
+    }
+    .quiz-progress-fill {
+      height: 100%; background: linear-gradient(90deg, #d0d0d0, #1a1a1a);
+      border-radius: 99px; transition: width 0.5s ease;
+    }
+
+    /* ─── CONTACT ─── */
+    #contacts { padding: 110px 64px; text-align: center; position: relative; z-index: 1; }
+    .contact-inner { max-width: 660px; margin: 0 auto; }
+    #contacts .section-title { margin-bottom: 16px; }
+    #contacts .section-body { margin-bottom: 44px; }
+    .contact-links { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid rgba(0,0,0,0.1); padding: 26px 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.78rem; color: var(--muted); position: relative; z-index: 1;
+    }
+    .footer-egg {
+      cursor: none; transition: transform 0.2s;
+      display: inline-block;
+    }
+    .footer-egg:hover { transform: scale(1.3) rotate(20deg); }
+
+    /* ─── KEYFRAMES ─── */
+    @keyframes fadeDown { from{opacity:0;transform:translateY(-18px)} to{opacity:1;transform:none} }
+    @keyframes fadeUp   { from{opacity:0;transform:translateY(22px)}  to{opacity:1;transform:none} }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      #hero { padding: 100px 24px 60px; }
+      .hero-inner { flex-direction: column-reverse; gap: 40px; align-items: center; }
+      .hero-content { max-width: 100%; }
+      .hero-photo-wrap { width: min(260px, 72vw); }
+      .chip-mid { display: none; }
+      .chip-top { left: -16px; top: -16px; }
+      .chip-bot { left: -16px; }
+      #about { padding: 60px 24px; grid-template-columns: 1fr; gap: 40px; }
+      #skills-section { padding: 60px 24px; }
+      .skills-two-col { grid-template-columns: 1fr; gap: 0; }
+      #projects { padding: 60px 24px; }
+      .projects-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+      #certifications { padding: 60px 24px; }
+      .certs-header-row { align-items: flex-start; }
+      #quiz-section { padding: 60px 24px; }
+      .quiz-box { padding: 30px 24px; }
+      .quiz-options { grid-template-columns: 1fr; }
+      #contacts { padding: 60px 24px; }
+      footer { padding: 20px 24px; flex-direction: column; gap: 6px; text-align: center; }
+      body { cursor: auto; }
+      #cursor, #cursor-ring { display: none; }
+      .photo-wipe-layer { cursor: pointer; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div id="progress-bar"></div>
+<div id="fun-tip" class="fun-tip"></div>
+<canvas id="particles"></canvas>
+
+<!-- NAV -->
+<nav>
+    <a class="nav-logo" href="index.html">Hemanth R</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+    <li><a href="./projects.html">Projects</a></li>
+    <li><a href="./certifications.html">Certifications</a></li>
+      <li><a href="index.html#contacts">Contact</a></li>
+    </ul>
+  </nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <span class="hero-badge">Machine Learning Engineer</span>
+      <h1 class="hero-title">Hello, my name is</h1>
+      <span class="hero-name" id="hero-name" title="Click me!">Hemanth R Aradhya</span>
+      <div class="typed-role"><span id="typed-text"></span><span class="cursor-blink"></span></div>
+      <p class="hero-desc">
+        Aspiring ML engineer with a strong interest in mathematics, building intelligent systems through data-driven approaches. Skilled in problem-solving, algorithms, and analytical thinking.
+      </p>
+      <div class="hero-btns">
+        <a href="./projects.html" class="btn btn-primary">View Projects</a>
+        <a href="./certifications.html" class="btn btn-outline">Certifications ↗</a>
+        <a href="https://www.linkedin.com/in/hemanth-r-aradhya-840bbb1b9" target="_blank" class="btn btn-outline">LinkedIn ↗</a>
+      </div>
+    </div>
+
+    <div class="hero-photo-wrap">
+      <div class="photo-bg-tile"></div>
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+      <div class="badge-chip chip-top">
+        <div class="chip-icon">🤖</div>
+        <div><div>ML Engineer</div><small>Aspiring</small></div>
+      </div>
+      <div class="badge-chip chip-mid">
+        <div class="chip-icon">📊</div>
+        <div><div>5+ Projects</div><small>Built &amp; shipped</small></div>
+      </div>
+      <div class="badge-chip chip-bot">
+        <div class="chip-icon">🧠</div>
+        <div><div>Deep Learning</div><small>In progress</small></div>
+      </div>
+      <div class="photo-frame">
+        <img src="myimg.jpeg" alt="Hemanth R Aradhya"
+          onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(160deg,#f2f2f2,#a8a8a8,#181818)';document.getElementById('fallback-icon').style.display='flex';" />
+        <canvas id="photo-wipe-layer" class="photo-wipe-layer" aria-label="Wipe to reveal photo"></canvas>
+        <div id="photo-wipe-hint" class="photo-wipe-hint">wipe to reveal</div>
+        <div id="fallback-icon" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:rgba(255,255,255,0.7);">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          <span style="font-size:0.75rem;letter-spacing:0.1em;">Add your photo</span>
+        </div>
+        <div class="photo-nametag">Hemanth R Aradhya<span>ML Engineer · Bengaluru</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal-left">
+    <p class="section-eyebrow">About Me</p>
+    <h2 class="section-title">Turning data into<br>intelligent systems.</h2>
+    <p class="section-body">
+      I'm a passionate machine learning enthusiast who loves turning data into intelligent, practical solutions.
+      With a focus on real-world impact, I combine algorithms, analytics, and problem-solving to build systems that learn and improve.
+    </p>
+    <div class="skills-grid">
+      <span class="skill-tag" data-tip="My primary language 🐍">Python</span>
+      <span class="skill-tag" data-tip="Low-level power ⚙️">C</span>
+      <span class="skill-tag" data-tip="Finding signals in noise 📡">Data Analytics</span>
+      <span class="skill-tag" data-tip="Teaching machines 🤖">Machine Learning</span>
+      <span class="skill-tag" data-tip="Going deeper... 🧬">Deep Learning</span>
+      <span class="skill-tag" data-tip="Inspired by the brain 🧠">Neural Networks</span>
+      <span class="skill-tag" data-tip="Building blocks of code 🏗️">Data Structures</span>
+    </div>
+  </div>
+  <div class="about-numbers reveal-right">
+    <div class="stat-card-about">
+      <div><span class="big counter" data-target="1">0</span><span class="unit">yr</span></div>
+      <div class="lbl">Learning ML Intensively</div>
+    </div>
+    <div class="stat-card-about">
+      <div><span class="big counter" data-target="5">0</span><span class="unit">+</span></div>
+      <div class="lbl">Projects Built</div>
+    </div>
+    <div class="stat-highlight stat-card-about">
+      <div><span class="big counter" data-target="100">0</span><span class="unit">%</span></div>
+      <div class="lbl">Learning Focus &amp; Dedication</div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS BARS -->
+<section id="skills-section">
+  <div class="skills-section-inner">
+    <div class="reveal">
+      <p class="section-eyebrow">Proficiency</p>
+      <h2 class="section-title">Technical Skills</h2>
+    </div>
+    <div class="skills-two-col">
+      <div class="reveal" style="transition-delay:0.1s">
+        <div class="skill-bar-group"><div class="skill-bar-label"><span>Python</span><span>85%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--tw:85%"></div></div></div>
+        <div class="skill-bar-group"><div class="skill-bar-label"><span>Machine Learning</span><span>75%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--tw:75%"></div></div></div>
+        <div class="skill-bar-group"><div class="skill-bar-label"><span>Deep Learning</span><span>65%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--tw:65%"></div></div></div>
+        <div class="skill-bar-group"><div class="skill-bar-label"><span>Data Analytics</span><span>80%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--tw:80%"></div></div></div>
+      </div>
+      <div class="reveal" style="transition-delay:0.25s">
+        <div class="skill-bar-group"><div class="skill-bar-label"><span>Neural Networks</span><span>60%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--tw:60%"></div></div></div>
+        <div class="skill-bar-group"><div class="skill-bar-label"><span>Data Structures</span><span>78%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--tw:78%"></div></div></div>
+        <div class="skill-bar-group"><div class="skill-bar-label"><span>Mathematics</span><span>88%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--tw:88%"></div></div></div>
+        <div class="skill-bar-group"><div class="skill-bar-label"><span>C Programming</span><span>70%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" style="--tw:70%"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="projects-header reveal">
+    <div>
+      <p class="section-eyebrow">Portfolio</p>
+      <h2 class="section-title">Selected Works</h2>
+      <a href="./projects.html" class="btn btn-outline section-link">Explore All Projects ↗</a>
+    </div>
+    <a href="#contacts" class="btn btn-outline" style="margin-bottom:6px;">Hire Me ↗</a>
+  </div>
+  <div class="projects-grid">
+    <div class="project-card reveal" style="transition-delay:0.05s">
+      <div class="project-overlay"></div>
+      <div class="project-thumb" style="background:linear-gradient(135deg,#f4f4f4,#d8d8d8)"><span class="thumb-icon">🤖</span></div>
+      <div class="project-body">
+        <div class="project-tags"><span class="project-tag">ML</span><span class="project-tag">Python</span></div>
+        <div class="project-name">ML Classification Model</div>
+        <p class="project-desc">Built and trained a classification pipeline with feature engineering and evaluation metrics.</p>
+        <div class="project-actions"><a href="./projects.html" class="project-link">View Project Page ↗</a></div>
+      </div>
+    </div>
+    <div class="project-card reveal" style="transition-delay:0.15s">
+      <div class="project-overlay"></div>
+      <div class="project-thumb" style="background:linear-gradient(135deg,#f1f1f1,#d2d2d2)"><span class="thumb-icon">📊</span></div>
+      <div class="project-body">
+        <div class="project-tags"><span class="project-tag">Data Analysis</span><span class="project-tag">Pandas</span></div>
+        <div class="project-name">Data Analytics Dashboard</div>
+        <p class="project-desc">Exploratory data analysis with visualisations revealing patterns across large datasets.</p>
+        <div class="project-actions"><a href="./projects.html" class="project-link">View Project Page ↗</a></div>
+      </div>
+    </div>
+    <div class="project-card reveal" style="transition-delay:0.25s">
+      <div class="project-overlay"></div>
+      <div class="project-thumb" style="background:linear-gradient(135deg,#f7f7f7,#dcdcdc)"><span class="thumb-icon">🧠</span></div>
+      <div class="project-body">
+        <div class="project-tags"><span class="project-tag">Deep Learning</span><span class="project-tag">NumPy</span></div>
+        <div class="project-name">Neural Network from Scratch</div>
+        <p class="project-desc">Implemented a feedforward neural network in pure Python with backpropagation.</p>
+        <div class="project-actions"><a href="./projects.html" class="project-link">View Project Page ↗</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ─── ML QUIZ SECTION ─── -->
+<section id="quiz-section">
+  <div class="quiz-inner">
+    <div class="reveal" style="text-align:center;margin-bottom:44px;">
+      <p class="section-eyebrow" style="justify-content:center;">Interactive</p>
+      <h2 class="section-title">Test Your ML Knowledge 🧠</h2>
+      <p class="section-body" style="max-width:480px;margin:0 auto;">Think you know ML? Take this quick quiz — curated by Hemanth. No pressure… unless you get them all wrong 😄</p>
+    </div>
+    <div class="quiz-box reveal">
+      <div class="quiz-label">Question <span id="q-num">1</span> of <span id="q-total">7</span></div>
+      <div class="quiz-progress-track"><div class="quiz-progress-fill" id="q-prog" style="width:14%"></div></div>
+      <div class="quiz-question" id="q-question">Loading…</div>
+      <div class="quiz-options" id="q-options"></div>
+      <div class="quiz-feedback" id="q-feedback"></div>
+      <div class="quiz-footer">
+        <div class="quiz-score">Score: <span id="q-score">0</span></div>
+        <button id="quiz-next">Next →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contacts">
+  <div class="contact-inner reveal">
+    <p class="section-eyebrow">Get In Touch</p>
+    <h2 class="section-title">Let's work together</h2>
+    <p class="section-body">Have a project in mind or want to chat? I'd love to hear from you.</p>
+    <div class="contact-links">
+      <a href="mailto:hemantharu2005@gmail.com" class="btn btn-primary">📧 Email Me</a>
+      <a href="https://www.linkedin.com/in/hemanth-r-aradhya-840bbb1b9" target="_blank" class="btn btn-outline">LinkedIn ↗</a>
+      <a href="https://github.com/Hemanth28092005" target="_blank" class="btn btn-outline">GitHub ↗</a>
+      <a href="https://leetcode.com/u/Hemanth_R_Aradhya/" target="_blank" class="btn btn-outline">LeetCode ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Hemanth R Aradhya. All rights reserved.</span>
+  <span>Built with ♥ &amp; curiosity <span class="footer-egg" id="footer-egg" title="Psst, try clicking my name!">🥚</span></span>
+</footer>
+
+<script>
+/* ══════════════════════════════════════════════════
+   CURSOR
+══════════════════════════════════════════════════ */
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cur.style.left = mx + 'px'; cur.style.top = my + 'px'; });
+document.querySelectorAll('a, button, .skill-tag, .project-card, .stat-card-about, .cert-card, .quiz-opt, .footer-egg').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-grow'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-grow'));
+});
+(function loop() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(loop); })();
+
+/* ══════════════════════════════════════════════════
+   CLICK RIPPLE
+══════════════════════════════════════════════════ */
+document.addEventListener('click', e => {
+  const r = document.createElement('div');
+  r.className = 'ripple-burst';
+  r.style.left = e.clientX + 'px';
+  r.style.top = e.clientY + 'px';
+  document.body.appendChild(r);
+  r.addEventListener('animationend', () => r.remove());
+});
+
+/* ══════════════════════════════════════════════════
+   SCROLL PROGRESS
+══════════════════════════════════════════════════ */
+const bar = document.getElementById('progress-bar');
+window.addEventListener('scroll', () => {
+  bar.style.width = (window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100) + '%';
+});
+
+/* ══════════════════════════════════════════════════
+   PHOTO PARALLAX
+══════════════════════════════════════════════════ */
+const photoWrap = document.querySelector('.hero-photo-wrap');
+if (photoWrap) {
+  photoWrap.addEventListener('mousemove', e => {
+    const r = photoWrap.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    photoWrap.querySelector('.photo-frame').style.transform = `perspective(800px) rotateY(${x*8}deg) rotateX(${-y*6}deg)`;
+  });
+  photoWrap.addEventListener('mouseleave', () => {
+    photoWrap.querySelector('.photo-frame').style.transform = 'perspective(800px) rotateY(0) rotateX(0)';
+  });
+}
+
+/* ══════════════════════════════════════════════════
+   PARTICLES
+══════════════════════════════════════════════════ */
+const wipeCanvas = document.getElementById('photo-wipe-layer');
+const wipeHint = document.getElementById('photo-wipe-hint');
+const fallbackIcon = document.getElementById('fallback-icon');
+if (wipeCanvas && wipeHint && fallbackIcon && getComputedStyle(fallbackIcon).display === 'none') {
+  const wipeCtx = wipeCanvas.getContext('2d');
+  let wiping = false;
+  let wipePoints = 0;
+  let wipeDone = false;
+
+  function paintFog() {
+    const rect = wipeCanvas.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const ratio = window.devicePixelRatio || 1;
+    wipeCanvas.width = Math.max(1, Math.floor(width * ratio));
+    wipeCanvas.height = Math.max(1, Math.floor(height * ratio));
+    wipeCtx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    wipeCtx.clearRect(0, 0, width, height);
+
+    const fog = wipeCtx.createLinearGradient(0, 0, width, height);
+    fog.addColorStop(0, 'rgba(255,255,255,0.98)');
+    fog.addColorStop(0.35, 'rgba(238,238,238,0.92)');
+    fog.addColorStop(0.7, 'rgba(178,178,178,0.8)');
+    fog.addColorStop(1, 'rgba(92,92,92,0.74)');
+    wipeCtx.fillStyle = fog;
+    wipeCtx.fillRect(0, 0, width, height);
+
+    for (let i = 0; i < 28; i++) {
+      const x = (i * 71 + (i % 3) * 23) % Math.max(width, 1);
+      const y = (i * 53 + (i % 4) * 19) % Math.max(height, 1);
+      const puff = wipeCtx.createRadialGradient(x, y, 10, x, y, 110);
+      puff.addColorStop(0, 'rgba(255,255,255,0.22)');
+      puff.addColorStop(1, 'rgba(255,255,255,0)');
+      wipeCtx.fillStyle = puff;
+      wipeCtx.beginPath();
+      wipeCtx.arc(x, y, 110, 0, Math.PI * 2);
+      wipeCtx.fill();
+    }
+
+    wipeCtx.fillStyle = 'rgba(255,255,255,0.16)';
+    wipeCtx.fillRect(0, height * 0.65, width, height * 0.35);
+    wipeCtx.fillStyle = 'rgba(255,255,255,0.1)';
+    wipeCtx.fillRect(0, 0, width, height * 0.18);
+  }
+
+  function revealAt(clientX, clientY) {
+    if (wipeDone) return;
+    const rect = wipeCanvas.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+    wipeCtx.globalCompositeOperation = 'destination-out';
+    const wipeGlow = wipeCtx.createRadialGradient(x, y, 10, x, y, 52);
+    wipeGlow.addColorStop(0, 'rgba(0,0,0,0.96)');
+    wipeGlow.addColorStop(0.55, 'rgba(0,0,0,0.68)');
+    wipeGlow.addColorStop(1, 'rgba(0,0,0,0)');
+    wipeCtx.fillStyle = wipeGlow;
+    wipeCtx.beginPath();
+    wipeCtx.arc(x, y, 52, 0, Math.PI * 2);
+    wipeCtx.fill();
+
+    wipePoints++;
+    if (wipePoints > 8) wipeHint.classList.add('fade');
+    if (wipePoints > 46) {
+      wipeDone = true;
+      wipeCanvas.classList.add('done');
+      wipeHint.classList.add('fade');
+    }
+  }
+
+  paintFog();
+  window.addEventListener('resize', paintFog);
+  wipeCanvas.addEventListener('pointerdown', e => {
+    wiping = true;
+    if (wipeCanvas.setPointerCapture) wipeCanvas.setPointerCapture(e.pointerId);
+    revealAt(e.clientX, e.clientY);
+  });
+  wipeCanvas.addEventListener('pointermove', e => {
+    if (wiping) revealAt(e.clientX, e.clientY);
+  });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(evt => {
+    wipeCanvas.addEventListener(evt, () => { wiping = false; });
+  });
+}
+
+const canvas = document.getElementById('particles'), ctx = canvas.getContext('2d');
+let W, H, pts = [];
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+class P {
+  constructor() { this.x=Math.random()*W; this.y=Math.random()*H; this.r=Math.random()*2+.5; this.vx=(Math.random()-.5)*.4; this.vy=(Math.random()-.5)*.4; this.a=Math.random()*.5+.2; }
+  step() { this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>W)this.vx*=-1; if(this.y<0||this.y>H)this.vy*=-1; }
+  draw() { ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fillStyle=`rgba(40,40,40,${this.a})`; ctx.fill(); }
+}
+for (let i = 0; i < 85; i++) pts.push(new P());
+(function loop() {
+  ctx.clearRect(0,0,W,H);
+  pts.forEach(p => { p.step(); p.draw(); });
+  for (let i=0;i<pts.length;i++) for (let j=i+1;j<pts.length;j++) {
+    const d = Math.hypot(pts[i].x-pts[j].x, pts[i].y-pts[j].y);
+    if (d < 140) { ctx.beginPath(); ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[j].x,pts[j].y); ctx.strokeStyle=`rgba(40,40,40,${.12*(1-d/140)})`; ctx.lineWidth=.8; ctx.stroke(); }
+  }
+  requestAnimationFrame(loop);
+})();
+
+/* ══════════════════════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════════════════════ */
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => ro.observe(el));
+
+/* ══════════════════════════════════════════════════
+   COUNTERS
+══════════════════════════════════════════════════ */
+const co = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !e.target.dataset.done) {
+      e.target.dataset.done = '1';
+      const t = +e.target.dataset.target, d = 1600, s = performance.now();
+      (function step(n) { const p = Math.min((n-s)/d,1), ease = 1-Math.pow(1-p,3); e.target.textContent = Math.round(ease*t); if (p<1) requestAnimationFrame(step); })(s);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.counter').forEach(c => co.observe(c));
+
+/* ══════════════════════════════════════════════════
+   SKILL BARS
+══════════════════════════════════════════════════ */
+const bo = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('anim'), 200); });
+}, { threshold: 0.3 });
+document.querySelectorAll('.skill-bar-fill').forEach(b => bo.observe(b));
+
+/* ══════════════════════════════════════════════════
+   TYPING EFFECT
+══════════════════════════════════════════════════ */
+const roles = ['ML Engineer', 'Data Scientist', 'Problem Solver', 'Deep Learning Explorer'];
+let ri = 0, ci = 0, del = false, tEl = document.getElementById('typed-text');
+function typeLoop() {
+  const w = roles[ri];
+  if (!del) { tEl.textContent = w.slice(0,++ci); if(ci===w.length){del=true;setTimeout(typeLoop,1500);return;} }
+  else { tEl.textContent = w.slice(0,--ci); if(ci===0){del=false;ri=(ri+1)%roles.length;} }
+  setTimeout(typeLoop, del ? 55 : 100);
+}
+setTimeout(typeLoop, 1300);
+
+/* ══════════════════════════════════════════════════
+   PROJECT CARD TILT
+══════════════════════════════════════════════════ */
+document.querySelectorAll('.project-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+    card.style.transform = `translateY(-10px) scale(1.02) rotateY(${x*10}deg) rotateX(${-y*8}deg)`;
+  });
+  card.addEventListener('mouseleave', () => { card.style.transition='transform 0.5s ease,box-shadow 0.35s'; card.style.transform=''; setTimeout(()=>card.style.transition='',500); });
+  card.addEventListener('mouseenter', () => { card.style.transition='box-shadow 0.35s'; });
+});
+
+/* ══════════════════════════════════════════════════
+   SKILL TAG TOOLTIPS
+══════════════════════════════════════════════════ */
+const tip = document.getElementById('fun-tip');
+document.querySelectorAll('[data-tip]').forEach(el => {
+  el.addEventListener('mouseenter', e => {
+    tip.textContent = el.dataset.tip;
+    tip.classList.add('show');
+  });
+  el.addEventListener('mousemove', e => {
+    tip.style.left = (e.clientX - tip.offsetWidth/2) + 'px';
+    tip.style.top  = (e.clientY - tip.offsetHeight - 16) + 'px';
+  });
+  el.addEventListener('mouseleave', () => tip.classList.remove('show'));
+});
+
+/* ══════════════════════════════════════════════════
+   GLITCH NAME ON CLICK + CONFETTI
+══════════════════════════════════════════════════ */
+const heroName = document.getElementById('hero-name');
+const msgs = ['👋 Hey there!', '🤖 Beep boop!', '🧠 ML time!', '✨ Thanks!', '🚀 To the moon!'];
+let msgIdx = 0;
+heroName.addEventListener('click', () => {
+  heroName.classList.remove('glitch');
+  void heroName.offsetWidth;
+  heroName.classList.add('glitch');
+  heroName.addEventListener('animationend', () => heroName.classList.remove('glitch'), { once: true });
+  spawnConfetti(heroName.getBoundingClientRect());
+});
+
+function spawnConfetti(rect) {
+  const colors = ['#111111','#3c3c3c','#707070','#a6a6a6','#d0d0d0','#f2f2f2'];
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  for (let i = 0; i < 22; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.cssText = `
+      left:${cx + (Math.random()-0.5)*rect.width}px;
+      top:${cy}px;
+      background:${colors[i % colors.length]};
+      transform:rotate(${Math.random()*360}deg);
+      animation-delay:${Math.random()*0.3}s;
+      animation-duration:${0.9+Math.random()*0.6}s;
+    `;
+    document.body.appendChild(c);
+    c.addEventListener('animationend', () => c.remove());
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   FOOTER EGG
+══════════════════════════════════════════════════ */
+document.getElementById('footer-egg').addEventListener('click', () => {
+  spawnConfetti({ left: window.innerWidth/2 - 100, top: window.innerHeight/2, width: 200, height: 0 });
+});
+
+/* ══════════════════════════════════════════════════
+   ML QUIZ
+══════════════════════════════════════════════════ */
+const quizData = [
+  {
+    q: "What does 'gradient descent' do in machine learning?",
+    opts: ["Increases the loss function", "Minimizes the loss function by updating weights", "Shuffles training data randomly", "Removes outliers from the dataset"],
+    ans: 1,
+    exp: "Gradient descent iteratively adjusts model weights in the direction that minimizes the loss — like rolling downhill to find the valley! 🏔️"
+  },
+  {
+    q: "Which of these is an example of supervised learning?",
+    opts: ["K-Means Clustering", "PCA Dimensionality Reduction", "Email spam classification", "Autoencoders"],
+    ans: 2,
+    exp: "Spam classification uses labelled data (spam / not spam) to train a model — that's the hallmark of supervised learning! ✉️"
+  },
+  {
+    q: "What problem does 'overfitting' describe?",
+    opts: ["The model is too simple to learn the data", "The model learns training data too well and fails on new data", "The training data is insufficient", "The learning rate is too low"],
+    ans: 1,
+    exp: "An overfit model memorizes training data instead of learning general patterns — great scores in training, poor scores in the real world. 🎓"
+  },
+  {
+    q: "In a neural network, what is the role of an 'activation function'?",
+    opts: ["Initializes random weights", "Adds non-linearity so the network can learn complex patterns", "Reduces the size of the model", "Normalizes the input data"],
+    ans: 1,
+    exp: "Without activation functions, stacking layers would just be matrix multiplication — activation functions let networks model non-linear relationships! ⚡"
+  },
+  {
+    q: "What does 'backpropagation' compute?",
+    opts: ["The forward pass predictions", "Gradients of the loss with respect to each weight", "The number of layers needed", "Optimal batch size for training"],
+    ans: 1,
+    exp: "Backprop uses the chain rule to calculate how much each weight contributed to the error, so gradient descent knows which way to adjust. 🔄"
+  },
+  {
+    q: "Which Python library is most commonly used for numerical computing in ML?",
+    opts: ["Flask", "Django", "NumPy", "SQLAlchemy"],
+    ans: 2,
+    exp: "NumPy is the backbone of scientific Python — fast n-dimensional arrays and math operations that most ML libraries (including PyTorch & TF) build on. 🔢"
+  },
+  {
+    q: "What does the 'learning rate' hyperparameter control?",
+    opts: ["How many layers a neural network has", "The size of weight updates during training", "The number of training epochs", "How much data is used per batch"],
+    ans: 1,
+    exp: "Too high and you overshoot the minimum; too low and training takes forever. Getting the learning rate right is half the battle! 🎯"
+  }
+];
+
+let qIdx = 0, score = 0, answered = false;
+
+function loadQuestion() {
+  const q = quizData[qIdx];
+  document.getElementById('q-num').textContent = qIdx + 1;
+  document.getElementById('q-total').textContent = quizData.length;
+  document.getElementById('q-prog').style.width = ((qIdx+1)/quizData.length*100) + '%';
+  document.getElementById('q-question').textContent = q.q;
+  document.getElementById('q-feedback').className = 'quiz-feedback';
+  document.getElementById('q-feedback').textContent = '';
+  document.getElementById('quiz-next').classList.remove('ready');
+  answered = false;
+
+  const opts = document.getElementById('q-options');
+  opts.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = o;
+    btn.addEventListener('click', () => handleAnswer(i, btn));
+    opts.appendChild(btn);
+  });
+}
+
+function handleAnswer(chosen, btn) {
+  if (answered) return;
+  answered = true;
+  const q = quizData[qIdx];
+  const allBtns = document.querySelectorAll('.quiz-opt');
+  allBtns.forEach(b => b.disabled = true);
+
+  const fb = document.getElementById('q-feedback');
+  if (chosen === q.ans) {
+    score++;
+    document.getElementById('q-score').textContent = score;
+    btn.classList.add('correct');
+    fb.textContent = '🎉 ' + q.exp;
+    fb.className = 'quiz-feedback good show';
+  } else {
+    btn.classList.add('wrong');
+    allBtns[q.ans].classList.add('correct');
+    fb.textContent = '💡 ' + q.exp;
+    fb.className = 'quiz-feedback bad show';
+  }
+  document.getElementById('quiz-next').classList.add('ready');
+}
+
+document.getElementById('quiz-next').addEventListener('click', () => {
+  qIdx++;
+  if (qIdx < quizData.length) {
+    loadQuestion();
+  } else {
+    // Final result
+    const pct = Math.round(score / quizData.length * 100);
+    const msgs = ['Keep learning! Every expert was once a beginner. 🌱', 'Not bad! You\'re on the right track. 🚀', 'Great job! You clearly know your ML! 🔥', 'Perfect score! You\'re basically Andrew Ng. 🏆'];
+    const tier = pct < 40 ? 0 : pct < 70 ? 1 : pct < 100 ? 2 : 3;
+    document.querySelector('.quiz-box').innerHTML = `
+      <div style="text-align:center;padding:20px 0;">
+        <div style="font-size:4rem;margin-bottom:16px;">${pct===100?'🏆':pct>=70?'🔥':pct>=40?'🚀':'📚'}</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:10px;">Quiz Complete!</h3>
+        <p style="font-size:2.5rem;font-weight:700;color:var(--blue);margin-bottom:10px;">${score}/${quizData.length}</p>
+        <p style="color:var(--muted);margin-bottom:28px;font-size:0.92rem;">${msgs[tier]}</p>
+        <button class="btn btn-primary" style="cursor:none;" onclick="qIdx=0;score=0;document.getElementById('q-score')&&(document.getElementById('q-score').textContent='0');document.querySelector('.quiz-box').innerHTML='';loadQuestion();location.reload();">Try Again 🔄</button>
+      </div>`;
+  }
+});
+
+loadQuestion();
+</script>
+</body>
+</html>
