@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Certifications | Hemanth R Aradhya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --navy:#111111; --blue:#2d2d2d; --sky:#8a8a8a; --light:#f2f2f2; --bg:#fafafa; --text:#111111; --muted:#666666; --white:#fff; --gold:#909090; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: radial-gradient(circle at top right, rgba(0,0,0,0.05), transparent 30%), linear-gradient(180deg, #ffffff 0%, #f4f4f4 48%, #fafafa 100%);
+      color: var(--text); overflow-x: hidden; cursor: none;
+    }
+    a, button { cursor: none; }
+    #cursor, #cursor-ring { position: fixed; pointer-events: none; border-radius: 50%; transform: translate(-50%, -50%); }
+    #cursor { width: 12px; height: 12px; background: var(--blue); z-index: 9999; transition: width 0.2s, height 0.2s, background 0.2s; }
+    #cursor-ring { width: 36px; height: 36px; border: 1.5px solid var(--blue); opacity: 0.45; z-index: 9998; transition: width 0.25s, height 0.25s, opacity 0.2s; }
+    .cursor-grow #cursor { width: 20px; height: 20px; background: var(--navy); }
+    .cursor-grow #cursor-ring { width: 52px; height: 52px; opacity: 0.16; }
+    #progress-bar { position: fixed; top: 0; left: 0; width: 0; height: 3px; background: linear-gradient(90deg, #d9d9d9, #797979, #111111); z-index: 999; }
+    #particles { position: fixed; inset: 0; pointer-events: none; opacity: 0.34; z-index: 0; }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 64px; background: rgba(250,250,250,0.88); backdrop-filter: blur(18px); border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+    .nav-logo, .nav-links a { text-decoration: none; }
+    .nav-logo { color: var(--navy); font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; }
+    .nav-links { list-style: none; display: flex; gap: 30px; }
+    .nav-links a { color: var(--muted); font-size: 0.88rem; font-weight: 600; }
+    .nav-links a:hover, .nav-links a.active { color: var(--navy); }
+    main { position: relative; z-index: 1; }
+    .hero { max-width: 1240px; margin: 0 auto; padding: 140px 64px 84px; display: grid; grid-template-columns: 1.1fr 0.95fr; gap: 42px; align-items: center; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--blue); margin-bottom: 18px; }
+    .eyebrow::before { content: ""; width: 26px; height: 2px; background: var(--blue); }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; letter-spacing: -0.03em; }
+    .hero h1 { font-size: clamp(2.5rem, 5vw, 4.3rem); line-height: 1.05; margin-bottom: 18px; }
+    .hero p { max-width: 620px; color: var(--muted); line-height: 1.85; font-size: 0.98rem; }
+    .hero-actions, .card-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+    .hero-actions { margin-top: 28px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 26px; border-radius: 999px; text-decoration: none; font-size: 0.88rem; font-weight: 700; transition: transform 0.25s, box-shadow 0.25s, background 0.25s, color 0.25s; }
+    .btn:hover { transform: translateY(-3px); }
+    .btn-primary { background: var(--navy); color: #fff; box-shadow: 0 14px 32px rgba(0,0,0,0.14); }
+    .btn-outline { color: var(--navy); border: 2px solid var(--navy); background: transparent; }
+    .btn-outline:hover { background: var(--navy); color: #fff; }
+    .summary-panel { position: relative; overflow: hidden; padding: 32px; border-radius: 30px; background: linear-gradient(160deg, #111111, #3d3d3d); color: #fff; box-shadow: 0 26px 70px rgba(0,0,0,0.16); }
+    .summary-panel::before { content: ""; position: absolute; inset: auto -80px -90px auto; width: 220px; height: 220px; border-radius: 50%; background: rgba(255,255,255,0.08); filter: blur(8px); }
+    .summary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; position: relative; z-index: 1; }
+    .summary-card { padding: 18px; border-radius: 18px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); }
+    .summary-card strong { display: block; color: var(--sky); font-size: 1.8rem; margin-bottom: 6px; }
+    .summary-card span { color: rgba(255,255,255,0.72); font-size: 0.82rem; line-height: 1.6; }
+    .section { max-width: 1240px; margin: 0 auto; padding: 10px 64px 90px; }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 36px; }
+    .section-head p { max-width: 640px; color: var(--muted); line-height: 1.82; }
+    .cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .cert-card { position: relative; overflow: hidden; padding: 18px; border-radius: 26px; background: rgba(255,255,255,0.92); border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 18px 46px rgba(0,0,0,0.06); transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s; }
+    .cert-card:hover { transform: translateY(-8px) rotate(0.4deg); box-shadow: 0 28px 62px rgba(0,0,0,0.12); border-color: rgba(0,0,0,0.18); }
+    .cert-preview {
+      width: 100%; height: 220px; overflow: hidden; border-radius: 18px;
+      background: linear-gradient(160deg, #f4f4f4, #d9d9d9);
+      border: 1px solid rgba(0,0,0,0.08); margin-bottom: 18px;
+    }
+    .cert-preview iframe {
+      width: 100%; height: 100%; border: 0; background: #fff;
+    }
+    .cert-fallback {
+      width: 100%; height: 100%; display: none; align-items: center; justify-content: center;
+      flex-direction: column; gap: 8px; color: var(--navy); font-weight: 700; text-align: center; padding: 20px;
+      background: linear-gradient(160deg, #f7f7f7, #dfdfdf);
+    }
+    .issuer { color: var(--blue); text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.68rem; font-weight: 700; margin-bottom: 10px; }
+    .cert-card h3 { font-size: 1.22rem; margin-bottom: 10px; }
+    .cert-card p { color: var(--muted); line-height: 1.76; font-size: 0.88rem; }
+    .cert-meta { display: flex; justify-content: space-between; gap: 12px; margin: 20px 0 18px; color: var(--muted); font-size: 0.76rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+    .status { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+    .status.complete { color: #111111; background: #ededed; }
+    .status.progress { color: #111111; background: #e1e1e1; }
+    .cert-link {
+      display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+      color: var(--navy); font-size: 0.82rem; font-weight: 700;
+    }
+    .cert-link:hover { color: var(--blue); }
+    .journey { display: grid; gap: 20px; }
+    .journey-step { display: grid; grid-template-columns: 110px 1fr; gap: 24px; align-items: start; padding: 28px; border-radius: 24px; background: rgba(255,255,255,0.9); border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 16px 44px rgba(0,0,0,0.06); }
+    .journey-step strong { color: var(--gold); font-size: 0.86rem; letter-spacing: 0.14em; text-transform: uppercase; }
+    .journey-step p { color: var(--muted); line-height: 1.82; }
+    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.75s ease, transform 0.75s ease; }
+    .reveal.vis { opacity: 1; transform: none; }
+    footer { max-width: 1240px; margin: 0 auto; padding: 28px 64px 40px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; color: var(--muted); font-size: 0.8rem; }
+    @media (max-width: 900px) {
+      body { cursor: auto; }
+      a, button { cursor: pointer; }
+      #cursor, #cursor-ring { display: none; }
+      nav, .hero, .section, footer { padding-left: 24px; padding-right: 24px; }
+      nav { padding-top: 16px; padding-bottom: 16px; }
+      .nav-links { gap: 16px; flex-wrap: wrap; justify-content: end; }
+      .hero { grid-template-columns: 1fr; padding-top: 120px; }
+      .summary-grid, .journey-step { grid-template-columns: 1fr; }
+      .section-head { align-items: start; }
+    }
+  </style>
+</head>
+<body>
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+  <div id="progress-bar"></div>
+  <canvas id="particles"></canvas>
+  <nav>
+    <a class="nav-logo" href="index.html">Hemanth R</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a class="active" href="certifications.html">Certifications</a></li>
+      <li><a href="index.html#contacts">Contact</a></li>
+    </ul>
+  </nav>
+  <main>
+    <section class="hero">
+      <div class="reveal">
+        <span class="eyebrow">Learning Journey</span>
+        <h1>Credentials that support a deeper machine learning foundation.</h1>
+        <p>A list of all certifications I have completed over the span of my undergraduate studies.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="projects.html">Browse Projects</a>
+          <a class="btn btn-outline" href="index.html#contacts">Get in Touch</a>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="section-head reveal">
+        <div><span class="eyebrow">Credentials</span><h2>Certificate gallery</h2></div>
+      </div>
+      <div class="cert-grid">
+        <article class="cert-card reveal"><div class="cert-preview"><iframe src="1-072b2f84-cd13-40c5-b205-d828afe6ff7f.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH" title="Certificate 01"></iframe><div class="cert-fallback">Certificate Preview<span>Open PDF below</span></div></div><div class="issuer">Infosys</div><h3>Javascript</h3><p>Preview sourced from <code>1-072b2f84-cd13-40c5-b205-d828afe6ff7f.pdf</code>.</p><div class="cert-meta"><span>PDF file</span><span class="status complete">Available</span></div><a class="cert-link" href="1-072b2f84-cd13-40c5-b205-d828afe6ff7f.pdf" target="_blank">Open full certificate ↗</a></article>
+        <article class="cert-card reveal"><div class="cert-preview"><iframe src="1-0c44a497-7f5f-4b8a-aaea-07b9503ab08b.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH" title="Certificate 02"></iframe><div class="cert-fallback">Certificate Preview<span>Open PDF below</span></div></div><div class="issuer">Infosys</div><h3>Html 5</h3><p>Preview sourced from <code>1-0c44a497-7f5f-4b8a-aaea-07b9503ab08b.pdf</code>.</p><div class="cert-meta"><span>PDF file</span><span class="status complete">Available</span></div><a class="cert-link" href="1-0c44a497-7f5f-4b8a-aaea-07b9503ab08b.pdf" target="_blank">Open full certificate ↗</a></article>
+        <article class="cert-card reveal"><div class="cert-preview"><iframe src="1-173f5bac-c371-49b8-8386-e3378c70b35b.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH" title="Certificate 03"></iframe><div class="cert-fallback">Certificate Preview<span>Open PDF below</span></div></div><div class="issuer">Infosys</div><h3>Python-2</h3><p>Preview sourced from <code>1-173f5bac-c371-49b8-8386-e3378c70b35b.pdf</code>.</p><div class="cert-meta"><span>PDF file</span><span class="status complete">Available</span></div><a class="cert-link" href="1-173f5bac-c371-49b8-8386-e3378c70b35b.pdf" target="_blank">Open full certificate ↗</a></article>
+        <article class="cert-card reveal"><div class="cert-preview"><iframe src="1-7405b276-2b52-4fa9-a533-761badb51d14.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH" title="Certificate 04"></iframe><div class="cert-fallback">Certificate Preview<span>Open PDF below</span></div></div><div class="issuer">Infosys</div><h3>Java</h3><p>Preview sourced from <code>1-7405b276-2b52-4fa9-a533-761badb51d14.pdf</code>.</p><div class="cert-meta"><span>PDF file</span><span class="status complete">Available</span></div><a class="cert-link" href="1-7405b276-2b52-4fa9-a533-761badb51d14.pdf" target="_blank">Open full certificate ↗</a></article>
+        <article class="cert-card reveal"><div class="cert-preview"><iframe src="1-7be2cba9-0a91-4a90-ab37-fc1c84d8c83e.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH" title="Certificate 05"></iframe><div class="cert-fallback">Certificate Preview<span>Open PDF below</span></div></div><div class="issuer">Infosys</div><h3>Python zero</h3><p>Preview sourced from <code>1-7be2cba9-0a91-4a90-ab37-fc1c84d8c83e.pdf</code>.</p><div class="cert-meta"><span>PDF file</span><span class="status complete">Available</span></div><a class="cert-link" href="1-7be2cba9-0a91-4a90-ab37-fc1c84d8c83e.pdf" target="_blank">Open full certificate ↗</a></article>
+        <article class="cert-card reveal"><div class="cert-preview"><iframe src="1-9b1870c9-bc4a-4f42-af6b-fac2167bb9a3.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH" title="Certificate 06"></iframe><div class="cert-fallback">Certificate Preview<span>Open PDF below</span></div></div><div class="issuer">Infosys</div><h3>Design Thinking</h3><p>Preview sourced from <code>1-9b1870c9-bc4a-4f42-af6b-fac2167bb9a3.pdf</code>.</p><div class="cert-meta"><span>PDF file</span><span class="status complete">Available</span></div><a class="cert-link" href="1-9b1870c9-bc4a-4f42-af6b-fac2167bb9a3.pdf" target="_blank">Open full certificate ↗</a></article>
+        <article class="cert-card reveal"><div class="cert-preview"><iframe src="1-9d04187d-d371-413c-ad28-0a6acaa43100.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH" title="Certificate 07"></iframe><div class="cert-fallback">Certificate Preview<span>Open PDF below</span></div></div><div class="issuer">Infosys</div><h3>Python 1</h3><p>Preview sourced from <code>1-9d04187d-d371-413c-ad28-0a6acaa43100.pdf</code>.</p><div class="cert-meta"><span>PDF file</span><span class="status complete">Available</span></div><a class="cert-link" href="1-9d04187d-d371-413c-ad28-0a6acaa43100.pdf" target="_blank">Open full certificate ↗</a></article>
+        <article class="cert-card reveal"><div class="cert-preview"><iframe src="1-a7f39352-2cb2-4743-8b0e-49804502064b.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH" title="Certificate 08"></iframe><div class="cert-fallback">Certificate Preview<span>Open PDF below</span></div></div><div class="issuer">Infosys</div><h3>Networking</h3><p>Preview sourced from <code>1-a7f39352-2cb2-4743-8b0e-49804502064b.pdf</code>.</p><div class="cert-meta"><span>PDF file</span><span class="status complete">Available</span></div><a class="cert-link" href="1-a7f39352-2cb2-4743-8b0e-49804502064b.pdf" target="_blank">Open full certificate ↗</a></article>
+        <article class="cert-card reveal"><div class="cert-preview"><iframe src="1-bf1c2ff2-b52d-4f9f-ba10-1e44ad417c91.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH" title="Certificate 09"></iframe><div class="cert-fallback">Certificate Preview<span>Open PDF below</span></div></div><div class="issuer">Infosys</div><h3>Front End Development</h3><p>Preview sourced from <code>1-bf1c2ff2-b52d-4f9f-ba10-1e44ad417c91.pdf</code>.</p><div class="cert-meta"><span>PDF file</span><span class="status complete">Available</span></div><a class="cert-link" href="1-bf1c2ff2-b52d-4f9f-ba10-1e44ad417c91.pdf" target="_blank">Open full certificate ↗</a></article>
+        <article class="cert-card reveal"><div class="cert-preview"><iframe src="1-e7dc3b3f-d1fe-4704-b601-5d09bcb26222.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH" title="Certificate 10"></iframe><div class="cert-fallback">Certificate Preview<span>Open PDF below</span></div></div><div class="issuer">Infosys</div><h3>CS53</h3><p>Preview sourced from <code>1-e7dc3b3f-d1fe-4704-b601-5d09bcb26222.pdf</code>.</p><div class="cert-meta"><span>PDF file</span><span class="status complete">Available</span></div><a class="cert-link" href="1-e7dc3b3f-d1fe-4704-b601-5d09bcb26222.pdf" target="_blank">Open full certificate ↗</a></article>
+        <article class="cert-card reveal"><div class="cert-preview"><iframe src="1-f3241742-65bd-41fd-bbde-5d029db60895.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH" title="Certificate 11"></iframe><div class="cert-fallback">Certificate Preview<span>Open PDF below</span></div></div><div class="issuer">Infosys</div><h3>Python Foundation</h3><p>Preview sourced from <code>1-f3241742-65bd-41fd-bbde-5d029db60895.pdf</code>.</p><div class="cert-meta"><span>PDF file</span><span class="status complete">Available</span></div><a class="cert-link" href="1-f3241742-65bd-41fd-bbde-5d029db60895.pdf" target="_blank">Open full certificate ↗</a></article>
+        <article class="cert-card reveal"><div class="cert-preview"><iframe src="IBMDesign20260325-32-p8302x.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH" title="IBM Design Thinking"></iframe><div class="cert-fallback">Certificate Preview<span>Open PDF below</span></div></div><div class="issuer">IBM</div><h3>IBM AI Fundamentals</h3><p>Preview sourced from <code>IBMDesign20260325-32-p8302x.pdf</code>.</p><div class="cert-meta"><span>PDF file</span><span class="status complete">Available</span></div><a class="cert-link" href="IBMDesign20260325-32-p8302x.pdf" target="_blank">Open full certificate ↗</a></article>
+        <article class="cert-card reveal"><div class="cert-preview"><iframe src="Networking_Basics_certificate_hemantharu2005-gmail-com_811c787b-271e-4597-878d-9ca5c57d7254.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH" title="Cisco"></iframe><div class="cert-fallback">Certificate Preview<span>Open PDF below</span></div></div><div class="issuer">Cisco</div><h3>Networking Basics</h3><p>Preview sourced from <code>Networking_Basics_certificate_hemantharu2005-gmail-com_811c787b-271e-4597-878d-9ca5c57d7254.pdf</code>.</p><div class="cert-meta"><span>PDF file</span><span class="status complete">Available</span></div><a class="cert-link" href="Networking_Basics_certificate_hemantharu2005-gmail-com_811c787b-271e-4597-878d-9ca5c57d7254.pdf" target="_blank">Open full certificate ↗</a></article>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <span>&copy; 2026 Hemanth R Aradhya</span>
+    <span>All rights reserved.</span>
+  </footer>
+  <script>
+    const cur = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cur.style.left = mx + 'px'; cur.style.top = my + 'px'; });
+    document.querySelectorAll('a, button, .cert-card').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-grow'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-grow'));
+    });
+    (function loop() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(loop); })();
+    const bar = document.getElementById('progress-bar');
+    window.addEventListener('scroll', () => {
+      const total = document.body.scrollHeight - window.innerHeight;
+      bar.style.width = (total > 0 ? window.scrollY / total * 100 : 0) + '%';
+    });
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    let W, H;
+    const points = [];
+    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+    class Particle {
+      constructor() { this.x = Math.random() * W; this.y = Math.random() * H; this.r = Math.random() * 2 + 0.5; this.vx = (Math.random() - 0.5) * 0.35; this.vy = (Math.random() - 0.5) * 0.35; this.a = Math.random() * 0.34 + 0.16; }
+      step() { this.x += this.vx; this.y += this.vy; if (this.x < 0 || this.x > W) this.vx *= -1; if (this.y < 0 || this.y > H) this.vy *= -1; }
+      draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2); ctx.fillStyle = `rgba(30, 30, 30, ${this.a})`; ctx.fill(); }
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    for (let i = 0; i < 64; i++) points.push(new Particle());
+    (function animate() { ctx.clearRect(0, 0, W, H); points.forEach(p => { p.step(); p.draw(); }); requestAnimationFrame(animate); })();
+    const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('vis'); }); }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
